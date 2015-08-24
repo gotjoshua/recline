@@ -1,3 +1,6 @@
 [submodule "vendor/TimelineJS3"]
 	path = vendor/TimelineJS3
 	url = https://github.com/gotjoshua/TimelineJS3
+[submodule "vendor/TimelineJS2"]
+	path = vendor/TimelineJS2
+	url = https://github.com/NUKnightLab/TimelineJS
