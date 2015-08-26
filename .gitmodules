@@ -10,3 +10,6 @@
 [submodule "src/vendor/leaflet"]
 	path = src/vendor/leaflet
 	url = https://github.com/gotjoshua/recline.view.map
+[submodule "vendor/leaflet.markercluster"]
+	path = vendor/leaflet.markercluster
+	url = https://github.com/gotjoshua/Leaflet.markercluster
