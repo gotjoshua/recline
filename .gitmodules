@@ -4,3 +4,6 @@
 [submodule "vendor/TimelineJS2"]
 	path = vendor/TimelineJS2
 	url = https://github.com/gotjoshua/TimelineJS
+[submodule "vendor/leaflet/master"]
+	path = vendor/leaflet/master
+	url = https://github.com/gotjoshua/Leaflet
