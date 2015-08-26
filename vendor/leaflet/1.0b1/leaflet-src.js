@@ -133,11 +133,13 @@ L.Util = {
 
 	// trim whitespace from both sides of a string
 	trim: function (str) {
+		if(typeof str === "undefined" ) return undefined;
 		return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 	},
 
 	// split a string into words
 	splitWords: function (str) {
+		if(typeof str === "undefined" ) return undefined;
 		return L.Util.trim(str).split(/\s+/);
 	},
 
