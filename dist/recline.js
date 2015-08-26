@@ -2286,13 +2286,34 @@ my.Map = Backbone.View.extend({
   // on [OpenStreetMap](http://openstreetmap.org).
   //
   _setupMap: function(){
-    var self = this;
-    this.map = new L.Map(this.$map.get(0));
-
-    var mapUrl = "http://otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png";
-    var osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
-    var bg = new L.TileLayer(mapUrl, {maxZoom: 18, attribution: osmAttribution ,subdomains: '1234'});
-    this.map.addLayer(bg);
+      var self = this;
+      this.map = new L.Map(this.$map.get(0));
+  	var Stamen_Watercolor = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png', {
+  		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  		subdomains: 'abcd',
+  		minZoom: 1,
+  		maxZoom: 13,
+  		ext: 'png'
+  	});
+	var MapBox = L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+		subdomains: 'abcd',
+		id: '<your id>',
+		accessToken: '<your accessToken>'
+	});
+	var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+  		minZoom: 14,
+		maxZoom:22,
+		maxNativeZoom: 18
+	});
+      
+	  var mapUrl = "http://otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png";
+      var osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
+      var default_OSM_bg = new L.TileLayer(mapUrl, {minZoom: 13, maxZoom: 18, attribution: osmAttribution ,subdomains: '1234'});
+    
+  	this.map.addLayer(Esri_WorldImagery);
+  	this.map.addLayer(Stamen_Watercolor);
 
     this.markers = new L.MarkerClusterGroup(this._clusterOptions);
 
@@ -2302,8 +2323,9 @@ my.Map = Backbone.View.extend({
         this);
     this.features = new L.GeoJSON(null, this.geoJsonLayerOptions);
 
-    this.map.setView([0, 0], 2);
-
+    //this.map.setView([0, 0], 2);
+	var firstRecordAttr = this.model.records.models[0].attributes;
+	this.map.setView([firstRecordAttr.lat, firstRecordAttr.long], firstRecordAttr.zoom);
     this.mapReady = true;
   },
 

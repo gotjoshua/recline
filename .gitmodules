@@ -13,3 +13,6 @@
 [submodule "vendor/leaflet.markercluster"]
 	path = vendor/leaflet.markercluster
 	url = https://github.com/gotjoshua/Leaflet.markercluster
+[submodule "src/vendor/timeline"]
+	path = src/vendor/timeline
+	url = git@github.com:gotjoshua/recline.view.timeline.git
