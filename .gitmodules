@@ -7,3 +7,6 @@
 [submodule "vendor/leaflet/master"]
 	path = vendor/leaflet/master
 	url = https://github.com/gotjoshua/Leaflet
+[submodule "src/vendor/leaflet"]
+	path = src/vendor/leaflet
+	url = https://github.com/gotjoshua/recline.view.map
