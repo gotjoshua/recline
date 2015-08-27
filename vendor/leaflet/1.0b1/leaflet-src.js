@@ -6481,7 +6481,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
-	addData: function (geojson) {
+	addData: function (geojson, featureRef) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len, feature;
 
@@ -6512,8 +6512,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (options.onEachFeature) {
 			options.onEachFeature(geojson, layer);
 		}
-
-		return this.addLayer(layer);
+		var addLayerResult = this.addLayer(layer);
+		return (featureRef) ? layer : addLayerResult;
 	},
 
 	resetStyle: function (layer) {
@@ -6547,6 +6547,7 @@ L.extend(L.GeoJSON, {
 		    layers = [],
 		    pointToLayer = options && options.pointToLayer,
 		    coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
+			style = geojson.properties.style || {"fill": "#00cc00","stroke": "#555555"},
 		    latlng, latlngs, i, len;
 
 		if (!coords && !geometry) {
@@ -6573,7 +6574,9 @@ L.extend(L.GeoJSON, {
 		case 'Polygon':
 		case 'MultiPolygon':
 			latlngs = this.coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, coordsToLatLng);
-			return new L.Polygon(latlngs, options);
+			var newPoly = new L.Polygon(latlngs, options);
+			newPoly.setStyle(style);
+			return newPoly
 
 		case 'GeometryCollection':
 			for (i = 0, len = geometry.geometries.length; i < len; i++) {
@@ -6690,6 +6693,19 @@ L.Polygon.prototype.toGeoJSON = function () {
 	return L.GeoJSON.getFeature(this, {
 		type: (multi ? 'Multi' : '') + 'Polygon',
 		coordinates: coords
+		
+		
+		/*
+		style: this.properties
+		function(feature) {
+			var retObj = {};
+			
+	        switch (feature.properties.party) {
+	            case 'Republican': return {color: "#ff0000"};
+	            case 'Democrat':   return {color: "#0000ff"};
+	        }
+	    }*/
+		
 	});
 };
 

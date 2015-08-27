@@ -2110,14 +2110,16 @@ my.Map = Backbone.View.extend({
         return true;
       } else if (feature instanceof Object){
         feature.properties = {
+		  style:feature.properties || {"fill": "#00aacc","stroke": "#555555"} ,
           popupContent: self.infobox(doc),
           // Add a reference to the model id, which will allow us to
           // link this Leaflet layer to a Recline doc
           cid: doc.cid
+		   
         };
 
         try {
-          self.features.addData(feature);
+          doc.attributes.mapfeature = self.features.addData(feature,true); 
         } catch (except) {
           wrongSoFar += 1;
           var msg = 'Wrong geometry value';
@@ -2323,9 +2325,13 @@ my.Map = Backbone.View.extend({
         this);
     this.features = new L.GeoJSON(null, this.geoJsonLayerOptions);
 
-    //this.map.setView([0, 0], 2);
+    //
 	var firstRecordAttr = this.model.records.models[0].attributes;
-	this.map.setView([firstRecordAttr.lat, firstRecordAttr.long], firstRecordAttr.zoom);
+	if(firstRecordAttr.lat && firstRecordAttr.lng) {
+		this.map.setView([firstRecordAttr.lat, firstRecordAttr.lng], firstRecordAttr.zoom);
+	} else {
+		this.map.setView([0, 0], 4);
+	}
     this.mapReady = true;
   },
 
