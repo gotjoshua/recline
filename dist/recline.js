@@ -2119,7 +2119,7 @@ my.Map = Backbone.View.extend({
         };
 
         try {
-          doc.attributes.mapfeature = self.features.addData(feature,true); 
+		  doc.attributes.mapfeature = self.features.addData(feature,true); //jsg: keep ref to the new layer/feature
         } catch (except) {
           wrongSoFar += 1;
           var msg = 'Wrong geometry value';
@@ -2134,6 +2134,12 @@ my.Map = Backbone.View.extend({
           self.trigger('recline:flash', {message: 'Wrong geometry value', category:'error'});
         }
       }
+	  var featureClick = function(e){
+		  var model = doc;
+          var i = _.indexOf(doc.collection.models, doc);
+          window.location.hash = "#" + i.toString();
+	  };	  
+	  doc.attributes.mapfeature.on({click:featureClick})
       return true;
     });
   },
@@ -2294,9 +2300,15 @@ my.Map = Backbone.View.extend({
   		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   		subdomains: 'abcd',
   		minZoom: 1,
-  		maxZoom: 13,
+  		maxZoom: 11,
   		ext: 'png'
   	});
+	var Acetate_terrain = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
+		attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
+		subdomains: '0123',
+		minZoom: 12,
+		maxZoom: 15
+	});
 	var MapBox = L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 		attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 		subdomains: 'abcd',

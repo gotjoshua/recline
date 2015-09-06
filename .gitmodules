@@ -16,3 +16,6 @@
 [submodule "src/vendor/timeline"]
 	path = src/vendor/timeline
 	url = git@github.com:gotjoshua/recline.view.timeline.git
+[submodule "vendor/geojson.io"]
+	path = vendor/geojson.io
+	url = git@github.com:gotjoshua/geojson.io.git
